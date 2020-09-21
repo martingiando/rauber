@@ -12,15 +12,16 @@ h1 {
   margin-bottom: 1rem; }
 
 h2 {
-  font-size: 3rem;
+  font-size: 2.5rem;
   margin-top: 1rem; }
 
 h3 {
-  font-size: 2rem;
+  font-size: 1.8rem;
   margin-bottom: 1rem; }
 
 h4 {
-  margin-top: 0.9rem; }
+  margin-top: 0.9rem;
+  font-size: 1.2rem; }
 
 footer {
   background-color: #1D1D1D;
