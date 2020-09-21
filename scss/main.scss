@@ -8,6 +8,15 @@ html{
     height: 100%;
 }
 
+.bgHeader{
+    height: 7.8rem;
+    background-color: white;
+}
+
+.carousel{
+    margin-top: 7.8rem;
+}
+
 h1{
     font-size: 3.5rem;
     margin-top: 1rem;
@@ -27,6 +36,11 @@ h3{
 h4{
     margin-top: 0.9rem;
     font-size: 1.2rem;
+}
+
+h5{
+    font-size: 0.9rem;
+    padding: 12px;
 }
 
 footer{
@@ -74,6 +88,12 @@ select{
 
 .navbar-toggler{
     width: 10%;
+    cursor: pointer;
+}
+
+.navbar-toggler-icon{
+    font-size: 1.8rem;
+    text-align: center;
 }
 
 a{
@@ -87,6 +107,14 @@ a:hover{
 
 .navbar-nav{
     text-align: right;
+}
+
+.addCart{
+    font-size: 0.8rem;
+}
+
+.precioCard{
+    font-size: 0.8rem;
 }
 
 // Medium devices (tablets, 768px and up)
