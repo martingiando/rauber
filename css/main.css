@@ -8,10 +8,9 @@ html {
 
 .bgHeader {
   height: 7.8rem;
-  background-color: white; }
-
-.carousel {
-  margin-top: 7.8rem; }
+  background-color: rgba(255, 255, 255, 0.555); }
+  .bgHeader a {
+    font-size: 1.5rem; }
 
 h1 {
   font-size: 3.5rem;
@@ -86,7 +85,7 @@ a:hover {
 .navbar-nav {
   text-align: right; }
 
-.addCart {
+.addToCart {
   font-size: 0.8rem; }
 
 .precioCard {
