@@ -76,7 +76,7 @@ function renderbaseDeDatosLatas() {
         miNodo.innerHTML = `
         <div class="card item">
             <h5 class="card-title text-center item-title">${producto.nombre}</h5>
-            <p class="card-text text-center precioCard item-price">$${producto.precio}</p>
+            <p class="card-t1ext text-center precioCard item-price">$${producto.precio}</p>
             <img src="${producto.imagen}" class="card-img-top item-image" alt="...">
             <div class="card-body">
                 <div class="d-flex justify-content-center">
@@ -92,11 +92,11 @@ function renderbaseDeDatosLatas() {
 renderbaseDeDatosLatas();
 
 
- function renderbaseDeDatosPet() {
-     baseDeDatosPet.forEach(function (producto) {
-         var miNodo = document.createElement('div')
-         miNodo.classList.add('col', 'mb-4')
-         miNodo.innerHTML = `
+function renderbaseDeDatosPet() {
+    baseDeDatosPet.forEach(function (producto) {
+        var miNodo = document.createElement('div')
+        miNodo.classList.add('col', 'mb-4')
+        miNodo.innerHTML = `
          <div class="card item">
              <h5 class="card-title text-center item-title">${producto.nombre}</h5>
              <p class="card-text text-center precioCard item-price">$${producto.precio}</p>
@@ -108,15 +108,15 @@ renderbaseDeDatosLatas();
              </div>
          </div>
          `
-         $produtsContainerPet.appendChild(miNodo)
-     })
+        $produtsContainerPet.appendChild(miNodo)
+    })
 }
 renderbaseDeDatosPet();
 
 
 let sectorCompraDeProductos = document.querySelector('#compras')
 
-function sectorCompraCervezas(){
+function sectorCompraCervezas() {
     let miNodoCervezas1 = document.createElement('div')
     miNodoCervezas1.classList.add('col-6')
     miNodoCervezas1.innerHTML = `
@@ -141,26 +141,23 @@ function sectorCompraCervezas(){
         </div>
     `
 
-    let miNodoCervezas4 = document.createElement('div')
-    miNodoCervezas4.classList.add('col-md-12')
-    miNodoCervezas4.innerHTML = `
-        <div class='shopping-cart-total d-flex align-items-center'>
-            <p class='mb-0'>Total</p>
-            <p class='ml-4 mb-0 shoppingCartTotal'>$0</p>
-        
-            <button class='ml-auto btn btn-success comprarButton' type='button' data-toggle='modal' data-target='#comprarModal'>Comprar</button>
-        </div>
-    `
-
     sectorCompraDeProductos.appendChild(miNodoCervezas1)
     sectorCompraDeProductos.appendChild(miNodoCervezas2)
     sectorCompraDeProductos.appendChild(miNodoCervezas3)
-    sectorCompraDeProductos.appendChild(miNodoCervezas4)
 }
 
 sectorCompraCervezas()
 
-function sectorModal () {
+const comprarButton = document.querySelector('.comprarButton')
+
+comprarButton.addEventListener('click', comprarButtonClicked);
+
+function comprarButtonClicked(){
+    compraBirras.innerHTML = '';
+    updateShoppingCartTotal();
+}
+
+function sectorModal() {
     let miNodoModal = document.createElement('div')
     miNodoModal.classList.add('row')
     miNodoModal.innerHTML = `
@@ -210,11 +207,11 @@ sectorModal()
 
 const addToShoppingCartButtons = document.querySelectorAll('.addToCart');
 
-addToShoppingCartButtons.forEach(addToCartBurron =>{
-    addToCartBurron.addEventListener('click', clickAgregarCerveza);
+addToShoppingCartButtons.forEach(addToCartButton => {
+    addToCartButton.addEventListener('click', clickAgregarCerveza);
 });
 
-function clickAgregarCerveza(event){
+function clickAgregarCerveza(event) {
     let button = event.target;
     let item = button.closest('.item');
 
@@ -222,7 +219,86 @@ function clickAgregarCerveza(event){
     const itemPrice = item.querySelector('.item-price').textContent;
     const itemImage = item.querySelector('.item-image').src;
 
-    alert(itemTitle)
-    alert(itemPrice)
-    alert(itemImage)
+    addBirras(itemTitle, itemPrice, itemImage)
+}
+
+const compraBirras = document.querySelector('.shoppingCartBirraContainer');
+
+function addBirras(itemTitle, itemPrice, itemImage) {
+
+    const elementsTitle = compraBirras.getElementsByClassName('shoppingCartItemTitle');
+    for (let i = 0; i < elementsTitle.length; i++) {
+        if (elementsTitle[i].innerText === itemTitle) {
+            let elementQuantity = elementsTitle[i].parentElement.parentElement.parentElement.querySelector('.shoppingCartItemQuantity');
+            elementQuantity.value++;
+            updateShoppingCartTotal();
+            return;
+        };
+    }
+
+    const filaCarrito = document.createElement('div')
+    filaCarrito.innerHTML = `
+    
+    <div class="row shoppingCartItem">
+        <div class="col-6">
+            <div class="shopping-cart-item d-flex align-items-center h-100 border-bottom pb-2 pt-3">
+                <img src=${itemImage} class="shopping-cart-image">
+                <h6 class="shopping-cart-item-title shoppingCartItemTitle text-truncate ml-3 mb-0">${itemTitle}</h6>
+            </div>
+        </div>
+        <div class="col-2">
+            <div class="shopping-cart-price d-flex align-items-center h-100 border-bottom pb-2 pt-3">
+                <p class="item-price mb-0 shoppingCartItemPrice">${itemPrice}</p>
+            </div>
+        </div>
+        <div class="col-4">
+            <div
+                class="shopping-cart-quantity d-flex justify-content-between align-items-center h-100 border-bottom pb-2 pt-3">
+                <input class="shopping-cart-quantity-input shoppingCartItemQuantity" type="number"
+                    value="1">
+                <button class="btn btn-danger buttonDelete" type="button">X</button>
+            </div>
+        </div>
+    </div>
+
+    `
+
+    compraBirras.appendChild(filaCarrito);
+
+    filaCarrito.querySelector('.buttonDelete').addEventListener('click', removeShoppingCartItem);
+
+    filaCarrito.querySelector('.shoppingCartItemQuantity').addEventListener('change', quantityChanged)
+
+    updateShoppingCartTotal();
+}
+
+function updateShoppingCartTotal() {
+    let total = 0;
+    const shoppingCartTotal = document.querySelector('.shoppingCartTotal');
+
+    const shoppingCartItems = document.querySelectorAll('.shoppingCartItem');
+
+    shoppingCartItems.forEach(shoppingCartItem => {
+        const shoppingCartItemPriceElement = shoppingCartItem.querySelector('.shoppingCartItemPrice');
+        const shoppingCartItemPrice = Number(shoppingCartItemPriceElement.textContent.replace('$', ''));
+        const shoppingCartItemQuantityElement = shoppingCartItem.querySelector('.shoppingCartItemQuantity');
+        const shoppingCartItemQuantity = Number(shoppingCartItemQuantityElement.value);
+
+        total = total + shoppingCartItemPrice * shoppingCartItemQuantity;
+    });
+    shoppingCartTotal.innerHTML = `$${total.toFixed(0)}`
+}
+
+function removeShoppingCartItem(event) {
+    const buttonClicked = event.target;
+    buttonClicked.closest('.shoppingCartItem').remove();
+    updateShoppingCartTotal();
+}
+
+function quantityChanged(event) {
+    const input = event.target
+    if (input.value <= 0) {
+        input.value = 1
+    }
+    updateShoppingCartTotal();
 }
