@@ -66,7 +66,7 @@ let baseDeDatosPet = [
 
 let $productContainerLatas = document.querySelector('#productContainerLatas')
 let $produtsContainerPet = document.querySelector('#productContainerPet')
-let carrito = []
+let carrito = localStorage.carrito ? JSON.parse(localStorage.carrito) : [];
 let total = 0
 
 function renderbaseDeDatosLatas() {
@@ -80,7 +80,7 @@ function renderbaseDeDatosLatas() {
             <img src="${producto.imagen}" class="card-img-top item-image" alt="...">
             <div class="card-body">
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="addToCart item-button"><b>Agregar al Carrito</b></button>
+                    <button type="button" class="addToCart item-button" onclick="agregarAlCarritoLatas(${baseDeDatosLatas.indexOf(producto)})"><b>Agregar al Carrito</b></button>
                 </div>
             </div>
         </div>
@@ -103,7 +103,7 @@ function renderbaseDeDatosPet() {
              <img src=${producto.imagen} class="card-img-top item-image" alt="...">
              <div class="card-body">
                  <div class="d-flex justify-content-center">
-                     <button type="button" class="addToCart item-button"><b>Agregar al Carrito</b></button>
+                     <button type="button" class="addToCart item-button onclick="agregarAlCarritoPet(${baseDeDatosPet.indexOf(producto)})"><b>Agregar al Carrito</b></button>
                  </div>
              </div>
          </div>
@@ -205,6 +205,55 @@ function sectorModal() {
 }
 sectorModal()
 
+function agregarAlCarritoLatas(index) {
+    
+    var productoLata = baseDeDatosLatas[index];
+    var productoPet = baseDeDatosPet[index];
+    if (carrito.length > 0) {
+        var noExiste = true;
+        for (var i = 0; i < carrito.length; i++) {
+            if (productoLata.nombre === carrito[i].nombre) {
+            carrito[i].cantidad++;
+            noExiste = false;
+            }
+        }
+        if (noExiste) {
+            productoLata.cantidad = 1;
+            carrito.push(productoLata);
+        }
+    } 
+    else {
+        productoLata.cantidad = 1;
+        carrito.push(productoLata);
+    }
+    
+    localStorage.carrito = JSON.stringify(carrito);
+}
+
+function agregarAlCarritoPet(index) {
+    
+    var productoPet = baseDeDatosPet[index];
+    if (carrito.length > 0) {
+        var noExiste = true;
+        for (var i = 0; i < carrito.length; i++) {
+            if (productoPet.nombre === carrito[i].nombre) {
+            carrito[i].cantidad++;
+            noExiste = false;
+            }
+        }
+        if (noExiste) {
+            productoPet.cantidad = 1;
+            carrito.push(productoPet);
+        }
+    } 
+    else {
+        productoPet.cantidad = 1;
+        carrito.push(productoPet);
+    }
+    
+    localStorage.carrito = JSON.stringify(carrito);
+}
+
 const addToShoppingCartButtons = document.querySelectorAll('.addToCart');
 
 addToShoppingCartButtons.forEach(addToCartButton => {
@@ -218,6 +267,8 @@ function clickAgregarCerveza(event) {
     const itemTitle = item.querySelector('.item-title').textContent;
     const itemPrice = item.querySelector('.item-price').textContent;
     const itemImage = item.querySelector('.item-image').src;
+
+    localStorage.carrito = JSON.stringify(carrito)
 
     addBirras(itemTitle, itemPrice, itemImage)
 }
