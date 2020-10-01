@@ -1,66 +1,75 @@
-let baseDeDatosLatas = [
+let baseDeDatos = [
     {
         nombre: 'Simcoe Pal Peso Lata',
         precio: 150,
-        imagen: 'img/simcoePalPesoMain.jpg'
+        imagen: 'img/simcoePalPesoMain.jpg',
+        codigo: 1.1,
     },
     {
         nombre: 'Resistencia Red Ale Lata',
         precio: 130,
-        imagen: 'img/resistenciaMain.jpg'
+        imagen: 'img/resistenciaMain.jpg',
+        codigo: 1.2,
     },
     {
         nombre: 'American Ipa Bandida Lata',
         precio: 125,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 1.3,
     },
     {
         nombre: 'Golden Ale Lata',
         precio: 120,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 1.4,
     },
     {
         nombre: 'Angry Honey Rubia Ale Lata',
         precio: 125,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 1.5,
     },
     {
         nombre: 'Fra-Ñeri Imperial Stout Lata',
         precio: 200,
-        imagen: 'img/IpaBandidamain.jpg'
-    }
-]
-
-let baseDeDatosPet = [
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 1.6,
+    },
     {
         nombre: 'Simcoe Pal Peso Pet',
         precio: 170,
-        imagen: 'img/simcoePalPesoMain.jpg'
+        imagen: 'img/simcoePalPesoMain.jpg',
+        codigo: 2.1,
     },
     {
         nombre: 'Resistencia Red Ale Pet',
         precio: 160,
-        imagen: 'img/resistenciaMain.jpg'
+        imagen: 'img/resistenciaMain.jpg',
+        codigo: 2.2,
     },
     {
         nombre: 'American Ipa Bandida Pet',
         precio: 180,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 2.3,
     },
     {
         nombre: 'Golden Ale Pet',
         precio: 150,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 2.4,
     },
     {
         nombre: 'Angry Honey Rubia Ale Pet',
         precio: 160,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 2.5,
     },
     {
         nombre: 'Fenix Hop Pet',
         precio: 160,
-        imagen: 'img/IpaBandidamain.jpg'
+        imagen: 'img/IpaBandidamain.jpg',
+        codigo: 2.6,
     }
 ]
 
@@ -69,8 +78,8 @@ let $produtsContainerPet = document.querySelector('#productContainerPet')
 let carrito = localStorage.carrito ? JSON.parse(localStorage.carrito) : [];
 let total = 0
 
-function renderbaseDeDatosLatas() {
-    baseDeDatosLatas.forEach(function (producto) {
+function renderbaseDeDatos() {
+    baseDeDatos.forEach(function (producto) {
         var miNodo = document.createElement('div')
         miNodo.classList.add('col', 'mb-4')
         miNodo.innerHTML = `
@@ -80,38 +89,21 @@ function renderbaseDeDatosLatas() {
             <img src="${producto.imagen}" class="card-img-top item-image" alt="...">
             <div class="card-body">
                 <div class="d-flex justify-content-center">
-                    <button type="button" class="addToCart item-button" onclick="agregarAlCarritoLatas(${baseDeDatosLatas.indexOf(producto)})"><b>Agregar al Carrito</b></button>
+                    <button type="button" class="addToCart item-button" onclick="agregarAlCarritoLatas(${baseDeDatos.indexOf(producto)})"><b>Agregar al Carrito</b></button>
                 </div>
             </div>
         </div>
         `
-        $productContainerLatas.appendChild(miNodo)
+        if ((producto.codigo) < 2){
+            $productContainerLatas.appendChild(miNodo)
+        }
+        else if ((producto.codigo < 3) && (producto.codigo >= 2)){
+            $produtsContainerPet.appendChild(miNodo)
+        }
     })
 
 }
-renderbaseDeDatosLatas();
-
-
-function renderbaseDeDatosPet() {
-    baseDeDatosPet.forEach(function (producto) {
-        var miNodo = document.createElement('div')
-        miNodo.classList.add('col', 'mb-4')
-        miNodo.innerHTML = `
-         <div class="card item">
-             <h5 class="card-title text-center item-title">${producto.nombre}</h5>
-             <p class="card-text text-center precioCard item-price">$${producto.precio}</p>
-             <img src=${producto.imagen} class="card-img-top item-image" alt="...">
-             <div class="card-body">
-                 <div class="d-flex justify-content-center">
-                     <button type="button" class="addToCart item-button onclick="agregarAlCarritoPet(${baseDeDatosPet.indexOf(producto)})"><b>Agregar al Carrito</b></button>
-                 </div>
-             </div>
-         </div>
-         `
-        $produtsContainerPet.appendChild(miNodo)
-    })
-}
-renderbaseDeDatosPet();
+renderbaseDeDatos();
 
 
 let sectorCompraDeProductos = document.querySelector('#compras')
@@ -207,48 +199,23 @@ sectorModal()
 
 function agregarAlCarritoLatas(index) {
     
-    var productoLata = baseDeDatosLatas[index];
-    var productoPet = baseDeDatosPet[index];
+    var producto = baseDeDatos[index];
     if (carrito.length > 0) {
         var noExiste = true;
         for (var i = 0; i < carrito.length; i++) {
-            if (productoLata.nombre === carrito[i].nombre) {
+            if (producto.nombre === carrito[i].nombre) {
             carrito[i].cantidad++;
             noExiste = false;
             }
         }
         if (noExiste) {
-            productoLata.cantidad = 1;
-            carrito.push(productoLata);
+            producto.cantidad = 1;
+            carrito.push(producto);
         }
     } 
     else {
-        productoLata.cantidad = 1;
-        carrito.push(productoLata);
-    }
-    
-    localStorage.carrito = JSON.stringify(carrito);
-}
-
-function agregarAlCarritoPet(index) {
-    
-    var productoPet = baseDeDatosPet[index];
-    if (carrito.length > 0) {
-        var noExiste = true;
-        for (var i = 0; i < carrito.length; i++) {
-            if (productoPet.nombre === carrito[i].nombre) {
-            carrito[i].cantidad++;
-            noExiste = false;
-            }
-        }
-        if (noExiste) {
-            productoPet.cantidad = 1;
-            carrito.push(productoPet);
-        }
-    } 
-    else {
-        productoPet.cantidad = 1;
-        carrito.push(productoPet);
+        producto.cantidad = 1;
+        carrito.push(producto);
     }
     
     localStorage.carrito = JSON.stringify(carrito);
@@ -267,8 +234,6 @@ function clickAgregarCerveza(event) {
     const itemTitle = item.querySelector('.item-title').textContent;
     const itemPrice = item.querySelector('.item-price').textContent;
     const itemImage = item.querySelector('.item-image').src;
-
-    localStorage.carrito = JSON.stringify(carrito)
 
     addBirras(itemTitle, itemPrice, itemImage)
 }
