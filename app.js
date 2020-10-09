@@ -318,3 +318,10 @@ function quantityChanged(event) {
     }
     updateShoppingCartTotal();
 }
+
+// No salio meter jQuery
+$(document).ready(function () {
+    $(document).scroll(function () { 
+        console.log('Estas scrolleando gil')
+    });
+});
