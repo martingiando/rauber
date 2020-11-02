@@ -64,6 +64,9 @@ footer{
 button{
     height: 3rem;
     width: 60%;
+    #buttonModal{
+        width: 20%;
+    }
 }
 
 select{
@@ -115,6 +118,10 @@ a:hover{
 .precioCard{
     font-size: 0.8rem;
 }
+
+body {
+    font-family: "Open Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans, Ubuntu, Cantarell, "Helvetica Neue", Helvetica, Arial, sans-serif; 
+  }
 
   /* ? SHOPPING CART */
   .shopping-cart-items {
